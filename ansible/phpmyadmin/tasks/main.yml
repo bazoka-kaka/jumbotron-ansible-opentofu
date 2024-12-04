@@ -1,0 +1,110 @@
+---
+- name: Install and configure phpMyAdmin with MySQL
+  hosts: all
+  become: yes
+  tasks:
+    # Install MySQL Server
+    - name: Install MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+
+    # Start MySQL service
+    - name: Start MySQL service
+      systemd:
+        name: mysql
+        state: started
+        enabled: yes
+
+    # Secure MySQL installation
+    - name: Set MySQL root password
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        host_all: yes
+        login_user: root
+        login_password: ""
+
+    # Install required packages (php, Apache, and phpMyAdmin)
+    - name: Install Apache, PHP, and required PHP extensions
+      apt:
+        name:
+          - apache2
+          - php
+          - php-mysql
+          - libapache2-mod-php
+          - php-cli
+          - php-json
+          - php-xml
+          - php-curl
+          - php-mbstring
+        state: present
+        update_cache: yes
+
+    # Install phpMyAdmin
+    - name: Install phpMyAdmin
+      apt:
+        name: phpmyadmin
+        state: present
+        update_cache: yes
+
+    # Link phpMyAdmin to Apache's web directory
+    - name: Create symbolic link for phpMyAdmin in Apache directory
+      file:
+        src: /usr/share/phpmyadmin
+        dest: /var/www/html/phpmyadmin
+        state: link
+
+    # Configure Apache to allow .htaccess files and restart Apache
+    - name: Configure Apache for phpMyAdmin
+      lineinfile:
+        path: /etc/apache2/apache2.conf
+        regexp: '^#?Include /etc/phpmyadmin/apache.conf'
+        line: 'Include /etc/phpmyadmin/apache.conf'
+        create: yes
+
+    # Restart Apache service to apply changes
+    - name: Restart Apache service
+      systemd:
+        name: apache2
+        state: restarted
+        enabled: yes
+
+    # Allow MySQL to accept connections from localhost
+    - name: Ensure MySQL is bound to localhost
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: '^#?bind-address = 127.0.0.1'
+        line: 'bind-address = 127.0.0.1'
+        create: yes
+
+    # Restart MySQL service to apply the bind address change
+    - name: Restart MySQL service after bind address change
+      systemd:
+        name: mysql
+        state: restarted
+        enabled: yes
+
+    # Ensure MySQL user for phpMyAdmin
+    - name: Create a MySQL user for phpMyAdmin
+      mysql_user:
+        name: phpmyadmin
+        password: "root"  # Change this to a strong password
+        host: localhost
+        priv: "*.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    # Enable Apache mod_rewrite (if needed)
+    - name: Enable Apache mod_rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+
+    # Enable Apache mod_ssl (if needed)
+    - name: Enable Apache mod_ssl
+      apache2_module:
+        name: ssl
+        state: present

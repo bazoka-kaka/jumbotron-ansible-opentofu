@@ -1,0 +1,14 @@
+---
+- name: Setup Apache
+  hosts: vm1
+  become: true
+  remote_user: ubuntu
+  roles:
+    - apache
+
+- name: PHPmyadmin & mySQL
+  hosts: vm2
+  become: true
+  remote_user: ubuntu
+  roles:
+    - phpmyadmin

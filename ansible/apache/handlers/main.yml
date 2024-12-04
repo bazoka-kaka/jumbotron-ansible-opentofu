@@ -1,0 +1,6 @@
+---
+- name: Restart apache
+  ansible.builtin.service:
+    name: httpd
+    state: started
+    enabled: true

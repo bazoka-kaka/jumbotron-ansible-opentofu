@@ -1,0 +1,10 @@
+---
+- name: Restart mysql
+  ansible.builtin.systemd:
+    name: mysql
+    state: restarted
+    enabled: true
+- name: Restart apache
+  ansible.builtin.service:
+    name: apache2
+    state: restarted

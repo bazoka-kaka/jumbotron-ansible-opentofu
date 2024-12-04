@@ -1,0 +1,13 @@
+[vm1]
+192.168.122.114 
+
+[vm1:vars]
+ansible_user=root
+ansible_password=ubuntu
+
+[vm2]
+192.168.122.147 
+
+[vm2:vars]
+ansible_user=root
+ansible_password=ubuntu

@@ -1,0 +1,4 @@
+---
+db_name: my_db
+phpmyadmin_version: "5.1.0"
+mysql_root_password: "your_password"
