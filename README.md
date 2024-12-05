@@ -1,6 +1,6 @@
 # MySQL - Apache Cloud Provision with OpenTofu, QEMU and Ansible
 
-Provisioning Apache Web Server and MySQL Database using OpenTofu, KVM and Ansible
+Provisioning Apache Web Server and MySQL Database using OpenTofu, QEMU and Ansible
 
 ![Ansible OpenTofu Diagram](/assets/Ansible_OpenTofu_Diagram.png)
 
