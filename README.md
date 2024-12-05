@@ -1,4 +1,4 @@
-# MySQL - Apache Cloud Provision with OpenTofu, KVM and Ansible
+# MySQL - Apache Cloud Provision with OpenTofu, QEMU and Ansible
 
 Provisioning Apache Web Server and MySQL Database using OpenTofu, KVM and Ansible
 
@@ -6,6 +6,6 @@ Provisioning Apache Web Server and MySQL Database using OpenTofu, KVM and Ansibl
 
 From the above diagram, we could see several points that we do in this project:
 
-1. Cloud Orchestration using KVM
+1. Cloud Orchestration using QEMU
 2. Provisioning the VMs using OpenTofu
 3. Configuration management of MySQL database and Apache web server using Ansible
